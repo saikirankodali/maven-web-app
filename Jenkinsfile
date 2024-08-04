@@ -1,33 +1,18 @@
-pipeline {
-  
-    agent {
-        label 'Ansible-Node'
+node {
+    def mvnPath
+
+     environment {
+        JAVA_HOME = '/opt/java/openjdk'
     }
     
-    tools{
-        maven "Maven-3.9.6"
+    stage('git clone') {
+        git 'https://github.com/ashokitschool/maven-web-app.git'
     }
-
-    stages {
-        stage('Clone') {
-            steps {
-               git 'https://github.com/ashokitschool/maven-web-app.git'
-            }
-        }
-        stage('Build') {
-            steps {
-               sh 'mvn clean package'
-            }
-        }
-        
-        stage('Create Image'){
-            steps{
-               steps {
-                	script {
-                		sh 'ansible-playbook task.yml'
-                	}
-                }
-            }
-        }
-    }
+    
+  stage('Maven build'){
+    def mvnHome = tool name:'maven', type:"maven";
+    def mvnPath = "${mvnHome}/bin/mvn";
+    sh "${mvnPath} --version"
+    sh "${mvnPath} clean package"
+ }
 }
