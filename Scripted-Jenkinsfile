@@ -9,9 +9,10 @@ node {
         git 'https://github.com/ashokitschool/maven-web-app.git'
     }
     
-    stage('Maven build'){
-        def mvnHome = tool name:'maven', type:"maven";
-        mvnPath = "${mvnHome}/bin/mvn";
-        sh "${mvnPath} clean package"
-    }    
+  stage('Maven build'){
+    def mvnHome = tool name:'maven', type:"maven";
+    def mvnPath = "${mvnHome}/bin/mvn";
+    sh "${mvnPath} --version"
+    sh "${mvnPath} clean package"
+ }
 }
